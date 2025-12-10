@@ -1,0 +1,17 @@
+{
+  "name": "job-queue",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "redis": "^5.10.0",
+    "uuid": "^13.0.0"
+  }
+}
