@@ -12,6 +12,8 @@ class Queue {
             id: id,
             data: JSON.stringify(jobData),
             status: 'waiting',
+            retries: 0,
+            maxRetries: 3,
             timestamp: Date.now().toString()
         }
         await this.redis.hSet(
@@ -37,6 +39,25 @@ class Queue {
             } catch (error) {
                 console.log('error in processing the job', error);
                 await this.redis.hSet(jobId, 'status', 'failed');
+                const retries = parseInt(payload.retries);
+                const maxRetries = parseInt(payload.maxRetries)
+                const newRetry = retries + 1
+                if (newRetry < maxRetries) {
+                    const delay = 1000 * Math.pow(2, newRetry);
+                    console.log(`retrying job ${jobId} at delay ${delay} at ${newRetry} attempt`);
+
+                    await new Promise(res => setTimeout(res, delay));
+
+                    await this.redis.hSet(jobId, 'retries', newRetry.toString());
+                    await this.redis.hSet(jobId, 'status', 'waiting');
+                    await this.redis.rPush(`${this.queueName}:waiting`, jobId)
+
+                } else {
+                    console.log(`job ${jobId} permanently failed after ${newRetry} attempts`);
+
+                    await this.redis.hSet(jobId, 'status', 'failed permanently');
+                    await this.redis.hSet(jobId, 'error', error.message)
+                }
 
             }
 
