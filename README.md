@@ -1,7 +1,7 @@
 
 # redis-job-queue
 
-A job queue implementation using Redis , featuring automatic retries and exponential backoff , built to explore how libraries like BillMQ work under the hood.
+A job queue implementation using Redis , featuring automatic retries and exponential backoff , built to explore how libraries like BullMQ work under the hood.
 
 This project demonstrates core mechanisms of job queues like job storage , List processing(FIFO) and retry patterns and is not meant for production use.
 
