@@ -18,6 +18,7 @@ This project demonstrates core mechanisms of job queues like job storage , List 
     : Track statuses of jobs between waiting , processing , finished , failed and premanently failed (>3 retries)
 - Built on top of Redis
 ## Architecture
+![System Design](assets/sysdesign.png)
 ![Queue Architecture](assets/architecture.png)
 
  The queue uses following Redis data structures :
